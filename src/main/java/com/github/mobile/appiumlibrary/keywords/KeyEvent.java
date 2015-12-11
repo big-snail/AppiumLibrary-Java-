@@ -43,9 +43,9 @@ public class KeyEvent extends RunOnFailureKeywordsAdapter{
 		if(driver instanceof AndroidDriver){
 			AndroidDriver android = (AndroidDriver) driver;
 			if(meta!=0)
-				android.sendKeyEvent(key, meta);
+				android.pressKeyCode(key, meta);
 			else
-				android.sendKeyEvent(key);
+				android.pressKeyCode(key);
 		}else{
 			throw new AppiumLibraryFatalException("This keyword only support android platform");
 		}

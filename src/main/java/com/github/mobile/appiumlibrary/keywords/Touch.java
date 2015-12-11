@@ -2,6 +2,7 @@ package com.github.mobile.appiumlibrary.keywords;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.android.AndroidDriver;
 
 import org.openqa.selenium.WebElement;
 import org.robotframework.javalib.annotation.ArgumentNames;
@@ -10,6 +11,7 @@ import org.robotframework.javalib.annotation.RobotKeyword;
 import org.robotframework.javalib.annotation.RobotKeywordOverload;
 import org.robotframework.javalib.annotation.RobotKeywords;
 
+import com.github.mobile.appiumlibrary.AppiumLibraryFatalException;
 import com.github.mobile.appiumlibrary.RunOnFailureKeywordsAdapter;
 
 @RobotKeywords
@@ -90,6 +92,36 @@ public class Touch extends RunOnFailureKeywordsAdapter{
 		WebElement ele = element.elementFind(locator, true, true).get(0);
 		TouchAction ta = new TouchAction(driver);
 		ta.longPress(ele).perform();
+	}
+	
+	/**
+	 * Send a long key event to the device
+	 * @param keycode
+	 * 			The key code
+	 * @param metastate
+	 * 			Android device meta state
+	 */
+	@RobotKeyword
+	@ArgumentNames({"keycode","metastate=None"})
+	public void longPressKeyCode(String keycode, String metastate){
+		AppiumDriver driver = applicationManage.getCurrentDriver();
+		int key = Integer.parseInt(keycode);
+		int meta = metastate!=null ? Integer.parseInt(metastate) : 0;
+		if(driver instanceof AndroidDriver){
+			AndroidDriver android = (AndroidDriver) driver;
+			if(meta!=0)
+				android.longPressKeyCode(key, meta);
+			else
+				android.longPressKeyCode(key);
+		}else{
+			throw new AppiumLibraryFatalException("This keyword only support android platform");
+		}
+	}
+	
+	
+	@RobotKeywordOverload
+	public void longPressKeyCode(String keycode){
+		longPressKeyCode(keycode, null);
 	}
 	
 	/**

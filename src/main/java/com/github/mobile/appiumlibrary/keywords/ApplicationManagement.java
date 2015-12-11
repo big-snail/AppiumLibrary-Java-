@@ -288,7 +288,7 @@ public class ApplicationManagement extends RunOnFailureKeywordsAdapter{
 	@RobotKeyword
 	@ArgumentNames({"contextName"})
 	public void switchToContext(String contextName){
-		driverCache.getCurrent().switchTo().window(contextName);
+		driverCache.getCurrent().context(contextName);
 	}
 	
 	/**
